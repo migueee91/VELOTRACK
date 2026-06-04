@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#0e0e0b">
 <title>VeloTrack</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
@@ -18,7 +18,7 @@
   --line:#ffffff08;--line2:#ffffff12;--line3:#ffffff1e;
   --white:#ede8df;--dim:#5a5a52;--mid:#8a8a7e;
   --accent:#d4c5a0;--green:#7aab7a;--red:#c46060;
-  --mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',sans-serif;
+  --mono:'IBM Plex Mono','Courier New',monospace;--sans:'IBM Plex Sans',system-ui,-apple-system,sans-serif;
 }
 html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--white);font-family:var(--sans);}
 
