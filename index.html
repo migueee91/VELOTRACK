@@ -1,4 +1,3 @@
-ack · HTML
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -10,7 +9,6 @@ ack · HTML
 <meta name="theme-color" content="#0e0e0b">
 <title>VeloTrack</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
- 
  
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -40,10 +38,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--white);fo
 .ni.on svg{fill:var(--accent);}
 .ni.on span{color:var(--accent);}
  
-/* ══════════════════════════
-   RIDE SCREEN — new layout
-   Map (fixed height) + data panel (scrollable bottom)
-══════════════════════════ */
+/* ── RIDE SCREEN ── */
 #screen-ride{overflow:hidden;}
 #map-wrap{
   position:relative;
@@ -97,7 +92,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--white);fo
 }
 .map-recenter svg{fill:var(--mid);}
  
-/* DATA PANEL — scrolls independently */
+/* DATA PANEL */
 .data-panel{
   flex:1;overflow-y:auto;overflow-x:hidden;
   scrollbar-width:none;background:var(--bg);
@@ -190,6 +185,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--white);fo
 .sum-cell:last-child{border-right:none;}
 .sv{font-family:var(--mono);font-size:19px;font-weight:500;color:var(--white);letter-spacing:-0.5px;line-height:1;}
 .su{font-family:var(--mono);font-size:9px;color:var(--dim);margin-left:2px;}
+.slexport{font-family:var(--mono);font-size:8.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);margin-top:4px;}
 .sl{font-family:var(--mono);font-size:8.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);margin-top:4px;}
 .ride-list{flex:1;overflow-y:auto;scrollbar-width:none;}
 .ride-list::-webkit-scrollbar{display:none;}
@@ -296,6 +292,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--white);fo
 .mg-lbl{font-family:var(--mono);font-size:8.5px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-bottom:4px;}
 .mg-val{font-family:var(--mono);font-size:20px;font-weight:500;color:var(--white);letter-spacing:-0.5px;}
 .mg-u{font-family:var(--mono);font-size:9px;color:var(--dim);margin-left:2px;}
+
 /* vs last ride */
 .vs-banner{background:var(--s3);border:1px solid var(--line2);border-radius:6px;padding:12px 14px;margin-bottom:14px;display:none;}
 .vs-banner.show{display:block;}
@@ -332,7 +329,6 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--white);fo
 </head>
 <body>
  
-<!-- ══════════ GPS PERMISSION SCREEN ══════════ -->
 <div id="gps-permission-screen" class="gps-permission">
   <svg width="48" height="48" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
   <h2>Acceso a ubicación</h2>
@@ -341,8 +337,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--white);fo
   <button class="gps-permission-deny" onclick="denyGPS()">Continuar sin GPS</button>
 </div>
  
-<!-- ══════════ SCREEN 1: RIDE ══════════ -->
-<div class="screen" id="screen-ride">
+<div class="screen active" id="screen-ride">
  
   <div id="map-wrap">
     <div id="map"></div>
@@ -363,7 +358,6 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--white);fo
       <svg width="16" height="16" viewBox="0 0 24 24"><path d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm8.94 3c-.46-4.17-3.77-7.48-7.94-7.94V1h-2v2.06C6.83 3.52 3.52 6.83 3.06 11H1v2h2.06c.46 4.17 3.77 7.48 7.94 7.94V23h2v-2.06c4.17-.46 7.48-3.77 7.94-7.94H23v-2h-2.06zM12 19c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/></svg>
     </div>
  
-    <!-- Start overlay (on map) -->
     <div class="start-overlay" id="start-overlay">
       <div class="start-btn" id="start-btn">
         <svg width="30" height="30" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
@@ -373,7 +367,6 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--white);fo
     </div>
   </div>
  
-  <!-- DATA PANEL — always visible, scrolls independently -->
   <div class="data-panel">
     <div class="speed-row">
       <span class="speed-int" id="speed-int">0</span><span class="speed-dec" id="speed-dec">.0</span>
@@ -423,7 +416,6 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--white);fo
   </div>
 </div>
  
-<!-- ══════════ SCREEN 2: HISTORY ══════════ -->
 <div class="screen" id="screen-history">
   <div class="hist-header">
     <div class="page-eyebrow">// recorridos</div>
@@ -448,7 +440,6 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--white);fo
   </div>
 </div>
  
-<!-- ══════════ SCREEN 3: ANALYSIS ══════════ -->
 <div class="screen" id="screen-analysis">
   <div class="anal-header">
     <div><div class="page-eyebrow">// rendimiento</div><div class="page-title">Análisis</div></div>
@@ -483,7 +474,6 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--white);fo
       <div class="s4c"><div class="s4l">Salidas</div><div class="s4v" id="a-count">—</div><div class="s4d" id="a-count-d"></div></div>
     </div>
  
-    <!-- COMPARATIVA -->
     <div class="compare-sec">
       <div class="cs-lbl">Comparar recorridos</div>
       <div class="compare-row">
@@ -494,14 +484,12 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--white);fo
       <div class="cmp-cards" id="cmp-cards" style="display:none;"></div>
     </div>
  
-    <!-- HEATMAP -->
     <div class="heatmap">
       <div class="cs-lbl">Actividad — últimas 4 semanas</div>
       <div class="hm-days"><div class="hm-day">D</div><div class="hm-day">L</div><div class="hm-day">M</div><div class="hm-day">X</div><div class="hm-day">J</div><div class="hm-day">V</div><div class="hm-day">S</div></div>
       <div class="hm-grid" id="hm-grid"></div>
     </div>
  
-    <!-- AI -->
     <div class="ai-block">
       <div class="ai-top"><div class="ai-badge">G</div><div class="ai-hdr">// gemini_analysis</div></div>
       <div id="ai-content"><div class="ai-body" id="ai-body">Completá al menos un recorrido para recibir tu análisis personalizado.</div></div>
@@ -522,7 +510,6 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--white);fo
   </div>
 </div>
  
-<!-- POST-RIDE MODAL -->
 <div class="modal-overlay" id="modal-overlay">
   <div class="modal">
     <div class="modal-title">// resumen del recorrido</div>
@@ -534,7 +521,6 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--white);fo
       <div class="mg-cell"><div class="mg-lbl">Vel. máxima</div><div class="mg-val" id="m-maxspeed">—</div></div>
       <div class="mg-cell"><div class="mg-lbl">Elevación</div><div class="mg-val" id="m-elev">—</div></div>
     </div>
-    <!-- vs last ride -->
     <div class="vs-banner" id="vs-banner">
       <div class="vs-title">vs recorrido anterior</div>
       <div class="vs-grid" id="vs-grid"></div>
@@ -545,7 +531,6 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--white);fo
   </div>
 </div>
  
-<!-- DETAIL MAP MODAL -->
 <div class="map-modal" id="map-modal">
   <div class="mm-header">
     <div><div class="page-eyebrow" id="mm-date">—</div><div class="page-title" id="mm-name">Recorrido</div></div>
@@ -579,13 +564,10 @@ let geminiKey=localStorage.getItem('vt_gemini_key')||'';
 let spotifyToken=null, spPlaying=false;
 let gpsGranted=false;
 const AUTO_PAUSE_SPD=1.5, AUTO_PAUSE_DELAY=8000;
+const VAR_ACCENT='#d4c5a0';
  
 // ═══════════════════════ GPS PERMISSION ═══════════════════════
 function requestGPS(){
-  if(typeof L==="undefined"){loadLeaflet(()=>{_doGPS();});return;}
-  _doGPS();
-}
-function _doGPS(){
   navigator.geolocation.getCurrentPosition(
     pos=>{
       gpsGranted=true;
@@ -605,10 +587,6 @@ function _doGPS(){
 }
  
 function denyGPS(){
-  if(typeof L==="undefined"){loadLeaflet(()=>{_denyGPS();});return;}
-  _denyGPS();
-}
-function _denyGPS(){
   document.getElementById('gps-permission-screen').style.display='none';
   initApp();
 }
@@ -625,6 +603,7 @@ function onGPSInit(pos){
 function setGPSStatus(state){
   const dot=document.getElementById('gps-dot-pill');
   const txt=document.getElementById('gps-txt');
+  if(!dot || !txt) return;
   dot.className='gps-dot-pill';
   if(state==='ok'){dot.classList.add('ok');txt.textContent='GPS ●';}
   else if(state==='err'){dot.classList.add('err');txt.textContent='GPS ✕';}
@@ -633,6 +612,10 @@ function setGPSStatus(state){
  
 // ═══════════════════════ MAP INIT ═══════════════════════
 function initApp(){
+  if(typeof L === "undefined") {
+    showToast('Los mapas no cargaron correctamente.');
+    return;
+  }
   map=L.map('map',{zoomControl:false,attributionControl:false,tap:false}).setView([-38.95,-68.06],14);
   L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:19}).addTo(map);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,opacity:0.45}).addTo(map);
@@ -645,14 +628,13 @@ function initApp(){
   });
   rideMarker=L.marker([-38.95,-68.06],{icon}).addTo(map);
  
-  // try to get location silently if already granted
   navigator.geolocation.getCurrentPosition(pos=>{
     onGPSInit(pos);
   },()=>{},{enableHighAccuracy:true,timeout:5000,maximumAge:30000});
 }
  
 function recenterMap(){
-  if(!rideMarker)return;
+  if(!rideMarker || !map)return;
   map.setView(rideMarker.getLatLng(),17,{animate:true});
 }
  
@@ -692,7 +674,7 @@ function onGPS(pos){
   if(altitude!=null)elevationLog.push(altitude);
   updateSpeedDisplay(currentSpeed);
   updateDistDisplay();
-  // auto-pause
+  
   if(currentSpeed<AUTO_PAUSE_SPD){
     if(!autoPauseTimeout) autoPauseTimeout=setTimeout(()=>{if(isRiding&&!isPaused&&currentSpeed<AUTO_PAUSE_SPD)autoPause();},AUTO_PAUSE_DELAY);
   }else{
@@ -744,7 +726,7 @@ function stopRide(){
   document.getElementById('m-maxspeed').innerHTML=`${maxSpeed.toFixed(1)}<span class="mg-u">km/h</span>`;
   document.getElementById('m-elev').innerHTML=`${Math.round(maxElev)}<span class="mg-u">m</span>`;
   document.getElementById('m-avgspeed').textContent=avgSpd.toFixed(1);
-  // vs last ride
+  
   buildVsBanner(avgSpd,totalDist,elapsed);
   document.getElementById('modal-overlay').classList.add('show');
 }
@@ -803,10 +785,9 @@ function resetRide(){
 function markPoint(){
   if(!isRiding||rideCoords.length===0)return;
   const ll=rideCoords[rideCoords.length-1];
-  L.circleMarker(ll,{radius:5,color:var_accent,fillColor:var_accent,fillOpacity:1,weight:2}).addTo(map);
+  L.circleMarker(ll,{radius:5,color:VAR_ACCENT,fillColor:VAR_ACCENT,fillOpacity:1,weight:2}).addTo(map);
   showToast('Punto marcado');
 }
-const var_accent='#d4c5a0';
  
 // ═══════════════════════ DISPLAY ═══════════════════════
 function updateSpeedDisplay(spd){
@@ -897,7 +878,7 @@ function renderAnalysis(){
   document.getElementById('a-time-d').textContent=delta(totT/3600,prevT/3600);
   document.getElementById('a-dist-d').textContent=delta(totD,prevD);
   document.getElementById('a-count-d').textContent=delta(cur.length,prev.length);
-  // weeks bar
+  
   const weeks=[];
   for(let i=analysisPeriodWeeks-1;i>=0;i--){
     const wE=new Date(now-i*7*86400000),wS=new Date(wE-7*86400000);
@@ -912,7 +893,7 @@ function renderAnalysis(){
     const hi=i===weeks.length-1;
     return `<div class="bc"><div class="bb ${hi?'hi':''}" style="height:${h}px"></div><div class="bl ${hi?'hi':''}">${w.label}</div></div>`;
   }).join('');
-  // sparkline
+  
   const spkW=weeks.map((w,i)=>{
     const wE=new Date(now-(analysisPeriodWeeks-1-i)*7*86400000),wS=new Date(wE-7*86400000);
     const wr=rides.filter(r=>{const d=new Date(r.date);return d>=wS&&d<wE;});
@@ -928,7 +909,7 @@ function setPeriod(w){analysisPeriodWeeks=w;document.querySelectorAll('.pt').for
  
 function renderSparkline(id,values){
   const svg=document.getElementById(id);
-  if(!values.length)return;
+  if(!values.length || !svg)return;
   const mx=Math.max(...values,1),mn=Math.min(...values);
   const W=320,H=50,p=4;
   const pts=values.map((v,i)=>{
@@ -943,6 +924,7 @@ function renderSparkline(id,values){
  
 function renderHeatmap(){
   const grid=document.getElementById('hm-grid');
+  if(!grid) return;
   const now=new Date();
   const cells=[];
   for(let i=27;i>=0;i--){
@@ -959,11 +941,14 @@ function renderHeatmap(){
 function populateCompareSelects(){
   const opts=rides.map(r=>`<option value="${r.id}">${formatDate(r.date)} · ${r.dist}km · ${r.avgSpeed}km/h</option>`).join('');
   const empty='<option value="">— Seleccionar —</option>';
-  document.getElementById('cmp-a').innerHTML=empty+opts;
-  document.getElementById('cmp-b').innerHTML=empty+opts;
+  const cmpA=document.getElementById('cmp-a');
+  const cmpB=document.getElementById('cmp-b');
+  if(!cmpA || !cmpB) return;
+  cmpA.innerHTML=empty+opts;
+  cmpB.innerHTML=empty+opts;
   if(rides.length>=2){
-    document.getElementById('cmp-a').value=rides[0].id;
-    document.getElementById('cmp-b').value=rides[1].id;
+    cmpA.value=rides[0].id;
+    cmpB.value=rides[1].id;
     renderCompare();
   }
 }
@@ -1054,7 +1039,7 @@ function initSpotify(){
   if(!cid)return;
   const ru=encodeURIComponent(window.location.href.split('?')[0]);
   const sc=encodeURIComponent('streaming user-read-playback-state user-modify-playback-state user-read-currently-playing');
-  window.location.href=`https://accounts.spotify.com/authorize?response_type=token&client_id=${cid}&scope=${sc}&redirect_uri=${ru}`;
+  window.location.href=`https://accounts.spotify.com/authorize?client_id=${cid}&response_type=token&redirect_uri=${ru}&scope=${sc}`;
 }
 function checkSpotifyToken(){
   const h=window.location.hash;
@@ -1069,12 +1054,12 @@ function checkSpotifyToken(){
 async function fetchCurrentTrack(){
   if(!spotifyToken)return;
   try{
-    const res=await fetch('https://api.spotify.com/v1/me/player/currently-playing',{headers:{Authorization:`Bearer ${spotifyToken}`}});
+    const res=await fetch('https://api.spotify.com/v1/me/player', {headers:{Authorization:`Bearer ${spotifyToken}`}});
     if(res.status===200){const d=await res.json();if(d?.item){document.getElementById('sp-track').textContent=d.item.name;document.getElementById('sp-artist').textContent=d.item.artists.map(a=>a.name).join(', ');spPlaying=d.is_playing;updatePlayBtn();}}
   }catch(e){}
   setTimeout(fetchCurrentTrack,10000);
 }
-async function spotifyToggle(){if(!spotifyToken)return;await fetch(`https://api.spotify.com/v1/me/player/${spPlaying?'pause':'play'}`,{method:'PUT',headers:{Authorization:`Bearer ${spotifyToken}`}});spPlaying=!spPlaying;updatePlayBtn();setTimeout(fetchCurrentTrack,800);}
+async function spotifyToggle(){if(!spotifyToken)return; await fetch(`https://api.spotify.com/v1/me/player/${spPlaying?'pause':'play'}`,{method:'PUT',headers:{Authorization:`Bearer ${spotifyToken}`}});spPlaying=!spPlaying;updatePlayBtn();setTimeout(fetchCurrentTrack,800);}
 async function spotifyNext(){if(!spotifyToken)return;await fetch('https://api.spotify.com/v1/me/player/next',{method:'POST',headers:{Authorization:`Bearer ${spotifyToken}`}});setTimeout(fetchCurrentTrack,800);}
 async function spotifyPrev(){if(!spotifyToken)return;await fetch('https://api.spotify.com/v1/me/player/previous',{method:'POST',headers:{Authorization:`Bearer ${spotifyToken}`}});setTimeout(fetchCurrentTrack,800);}
 function updatePlayBtn(){document.getElementById('sp-play').innerHTML=spPlaying?`<svg width="15" height="15" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" fill="#ede8df"/></svg>`:`<svg width="15" height="15" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#ede8df"/></svg>`;}
@@ -1102,20 +1087,24 @@ function getWeekLabel(date){const now=new Date();now.setHours(0,0,0,0);const dif
 function autoName(){const h=new Date().getHours();if(h<7)return'Salida nocturna';if(h<12)return'Salida matutina';if(h<15)return'Salida del mediodía';if(h<20)return'Salida vespertina';return'Salida nocturna';}
 function avg(arr){return arr.length?arr.reduce((s,v)=>s+v,0)/arr.length:0;}
 function delta(cur,prev){if(!prev)return'';const d=cur-prev;return`${d>=0?'↑':'↓'} ${d>=0?'+':''}${Math.abs(d)<10?d.toFixed(1):Math.round(d)}`;}
-function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
+function showToast(msg){const t=document.getElementById('toast');if(!t)return;t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
 let wakeLock=null;
 async function requestWakeLock(){if('wakeLock'in navigator)try{wakeLock=await navigator.wakeLock.request('screen');}catch(e){}}
  
 // ═══════════════════════ BOOT ═══════════════════════
-// Load Leaflet dynamically
 function loadLeaflet(cb){
   var css=document.createElement("link");css.rel="stylesheet";css.href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";document.head.appendChild(css);
   var s=document.createElement("script");s.src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";s.onload=cb;s.onerror=cb;document.head.appendChild(s);
 }
+
 document.getElementById('start-btn').addEventListener('click',startRide);
-checkSpotifyToken();
-// Show GPS permission screen first
-// (initApp called from requestGPS or denyGPS)
+
+window.addEventListener('DOMContentLoaded', () => {
+  checkSpotifyToken();
+  loadLeaflet(() => {
+    console.log("Leaflet listo en segundo plano.");
+  });
+});
 </script>
 </body>
 </html>
